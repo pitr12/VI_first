@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>Nájdených <%= @total_size %> výsledkov</h4>
+  </div>
+</div>
+
+<div class="row content-container">
+  <div class="col-md-12">
+    <div class="row">
+      <% @companies.each do |company| %>
+            <div class="col-md-6">
+              <div class="content-item">
+
+                <div class="row">
+                  <div class="col-md-4">
+                    Meno:
+                  </div>
+                  <div class="col-md-8">
+                    <span class="content-item-name"><%= company._source.businessName %></span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    Právna forma:
+                  </div>
+                  <div class="col-md-8">
+                    <span><%= company._source.legalForm %></span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    Deň zápisu:
+                  </div>
+                  <div class="col-md-8">
+                    <span><%= company._source.dateOfEntry %></span>
+                  </div>
+                </div>
+
+                <% if company._source.ico != ''%>
+                  <div class="content-item-ico">ICO: <%= company._source.ico %></div>
+                <% end %>
+
+                <div class="content-item-details">
+                  <%= link_to('Zobraziť detaily', show_path(company._id)) %>
+                </div>
+              </div>
+            </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-centered flickr_pagination">
+    <%= will_paginate @companies %>
+  </div>
+</div>

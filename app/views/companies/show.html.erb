@@ -1,0 +1,218 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="content-detail">
+      <h3 class="content-detail-companyName"><%= @company._source.businessName %></h3>
+      <div class="content-detail-actualization">aktualizované: <%= @company._source.dateOfActualization %></div>
+
+      <% if @company._source.deletionReason != '' || @company._source.dateOfDeletion != nil || @company._source.cancellationReason != '' || @company._source.cancelledSince  != nil%>
+          <div class="content-detail-removed">
+            <% if @company._source.dateOfDeletion != nil %>
+                <div class="row content-detail-removed-row">
+                  <div class="col-sm-3 content-detail-label">Deň výmazu:</div>
+                  <div class="col-sm-9">
+                    <div><%= @company._source.dateOfDeletion %></div>
+                  </div>
+                </div>
+            <% end %>
+
+            <% if @company._source.deletionReason != '' %>
+                <div class="row content-detail-removed-row">
+                  <div class="col-sm-3 content-detail-label">Dôvod výmazu:</div>
+                  <div class="col-sm-9">
+                    <div><%= @company._source.deletionReason %></div>
+                  </div>
+                </div>
+            <% end %>
+
+            <% if @company._source.cancelledSince != nil %>
+                <div class="row content-detail-removed-row">
+                  <div class="col-sm-3 content-detail-label">Spoločnosť zrušená od:</div>
+                  <div class="col-sm-9">
+                    <div><%= @company._source.cancelledSince %></div>
+                  </div>
+                </div>
+            <% end %>
+
+            <% if @company._source.cancellationReason != '' %>
+                <div class="row content-detail-removed-row">
+                  <div class="col-sm-3 content-detail-label">Právny dôvod zrušenia:</div>
+                  <div class="col-sm-9">
+                    <div><%= @company._source.cancellationReason %></div>
+                  </div>
+                </div>
+            <% end %>
+          </div>
+      <% end %>
+
+      <% if @company._source.ico != ''%>
+          <div class="content-detail-ico">ICO: <%= @company._source.ico %></div>
+      <% end %>
+
+
+      <% if @company._source.dateOfEntry != nil%>
+        <div class="row content-detail-row">
+          <div class="col-sm-3 content-detail-label">Deň zápisu:</div>
+          <div class="col-sm-9">
+            <span><%= @company._source.dateOfEntry %></span>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row content-detail-row">
+        <div class="col-sm-3 content-detail-label">Adresa:</div>
+        <div class="col-sm-9">
+          <% if @company._source.address.label != ''%><div><%= @company._source.address.label %></div><% end %>
+          <% if @company._source.address.city != ''%><div><%= @company._source.address.city %></div><% end %>
+          <% if @company._source.address["zip"] != ''%><div><%= @company._source.address["zip"] %></div><% end %>
+          <% if @company._source.address.country != ''%><div><%= @company._source.address.country %></div><% end %>
+        </div>
+      </div>
+
+      <% if @company._source.legalForm != ''%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Právna forma:</div>
+            <div class="col-sm-9">
+              <span class="content-detail-badge"><%= @company._source.legalForm %></span>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.businessActivities.size > 0%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Predmet činnosti:</div>
+            <div class="col-sm-9">
+              <ul class="content-detail-businessActivities">
+              <% @company._source.businessActivities.each do |businessActivity| %>
+                <li><%= businessActivity %></li>
+              <% end %>
+              </ul>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.companions.size > 0%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Spoločníci:</div>
+            <div class="col-sm-9">
+              <% @company._source.companions.each do |companion| %>
+                  <div class="content-detail-companion">
+                    <% if companion.title != ''%><span><%= companion.title %></span><% end %>
+                    <span><%= companion.person.firstName %></span>
+                    <span><%= companion.person.lastName %></span>
+                    <% if companion.address.label != ''%><div><%= companion.address.label %></div><% end %>
+                    <% if companion.address.city != ''%><div><%= companion.address.city %></div><% end %>
+                    <% if companion.address["zip"] != ''%><div><%= companion.address["zip"] %></div><% end %>
+                    <% if companion.address.country != ''%><div><%= companion.address.country %></div><% end %>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.capital.currency != ''%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Základné imanie:</div>
+            <div class="col-sm-9">
+              <span><%= @company._source.capital["size"] %> <%= @company._source.capital.currency  %></span>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.basicMemberContribution.currency != ''%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Základný členský vklad:</div>
+            <div class="col-sm-9">
+              <span><%= @company._source.basicMemberContribution["size"] %> <%= @company._source.basicMemberContribution.currency  %></span>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.eachMemberContribution.size > 0%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Výška vkladu každého spoločníka:</div>
+            <div class="col-sm-9">
+              <ul class="content-detail-businessActivities">
+                <% @company._source.eachMemberContribution.each do |contribution| %>
+                    <li><%= contribution %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.statutoryAuthority["type"] != ''%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Štatutárny orgán:</div>
+            <div class="col-sm-9">
+                <div class="content-detail-statutoryType"><%= @company._source.statutoryAuthority["type"] %></div>
+                <% if @company._source.statutoryAuthority.members.size > 0%>
+                  <% @company._source.statutoryAuthority.members.each do |member| %>
+                      <div class="content-detail-companion">
+                        <% if member.position != ''%><div class="content-detail-member"><%= member.position %></div><% end %>
+                        <% if member.title != ''%><span><%= member.title %></span><% end %>
+                        <span><%= member.person.firstName %></span>
+                        <span><%= member.person.lastName %></span>
+                        <% if member.address.label != ''%><div><%= member.address.label %></div><% end %>
+                        <% if member.address.city != ''%><div><%= member.address.city %></div><% end %>
+                        <% if member.address["zip"] != ''%><div><%= member.address["zip"] %></div><% end %>
+                        <% if member.address.country != ''%><div><%= member.address.country %></div><% end %>
+                        <% if member.since != nil%><div class="content-detail-member-since">(od <%= member.since %>)</div><% end %>
+                      </div>
+                  <% end %>
+                <% end %>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.actingInCompanyName != ''%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Konanie menom spoločnosti:</div>
+            <div class="col-sm-9">
+              <span><%= @company._source.actingInCompanyName %></span>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.auditCommittee.size > 0%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Kontrolná komisia:</div>
+            <div class="col-sm-9">
+                <% @company._source.auditCommittee.each do |member| %>
+                    <div class="content-detail-companion">
+                      <% if member.person != ''%><div><%= member.person %></div><% end %>
+                      <% if member.address.label != ''%><div><%= member.address.label %></div><% end %>
+                      <% if member.address.city != ''%><div><%= member.address.city %></div><% end %>
+                      <% if member.address["zip"] != ''%><div><%= member.address["zip"] %></div><% end %>
+                      <% if member.address.country != ''%><div><%= member.address.country %></div><% end %>
+                      <% if member.since != nil%><div class="content-detail-member-since">(od <%= member.since %>)</div><% end %>
+                    </div>
+                <% end %>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source.otherLegalFacts.size > 0%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Ďalšie právne skutočnosti:</div>
+            <div class="col-sm-9">
+              <ul class="content-detail-businessActivities">
+                <% @company._source.otherLegalFacts.each do |other| %>
+                    <li><%= other %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+      <% end %>
+
+      <% if @company._source["merge"] != ''%>
+          <div class="row content-detail-row">
+            <div class="col-sm-3 content-detail-label">Zlúčenie, splynutie, rozdelenie spoločnosti:</div>
+            <div class="col-sm-9">
+              <span><%= @company._source["merge"] %></span>
+            </div>
+          </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
