@@ -8,13 +8,26 @@ class CompaniesController < ApplicationController
   PAGE_SIZE = 10
 
   def index
-    @companies = @client.search index: 'vi', type: 'companies' , body: { query: { match_all: {} }, size: PAGE_SIZE, from: (params[:page] ? (params[:page].to_i - 1) * PAGE_SIZE : 0) }
+    @active_search = params[:search]
+    if params[:search]
+      query = {
+          'multi_match': {
+            'query': params[:search],
+            'fields': [ "businessName", "ico" ]
+          }
+      }
+    else
+      @active_search = nil
+      query = { match_all: {} }
+    end
+    @companies = @client.search index: 'vi', type: 'companies' , body: { query: query, size: PAGE_SIZE, from: (params[:page] ? (params[:page].to_i - 1) * PAGE_SIZE : 0) }
     @total_size = @companies["hits"]["total"].to_i
     process_companies
   end
 
   def show
     @company = Hashie::Mash.new @client.get index: 'vi', type: 'companies', id: params[:id]
+    @original_href = "http://orsr.sk/vypis.asp?ID=#{@company._source.pageId}&SID=#{@company._source.courtId}&P=0"
   end
 
   private

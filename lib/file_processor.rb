@@ -69,4 +69,4 @@ class FileProcessor
 end
 
 # FileProcessor.parse_files
-# FileProcessor.populate_elastic
+FileProcessor.populate_elastic

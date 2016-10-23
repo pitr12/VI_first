@@ -4,6 +4,15 @@
   </div>
 </div>
 
+<% if @active_search %>
+<div class="row">
+  <div class="col-md-12">
+    <span class="content-activeSearch">Hľadaný výraz: "<%= @active_search %>"</span>
+    <span class="content-activeSearch content-activeSearch-delete" onclick="clearSearchQuery()">X</span>
+  </div>
+</div>
+<% end %>
+
 <div class="row content-container">
   <div class="col-md-12">
     <div class="row">
