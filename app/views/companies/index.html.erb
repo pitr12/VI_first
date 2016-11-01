@@ -1,10 +1,98 @@
+<%= form_tag root_path, :method => 'get' do %>
+  <div class="row">
+    <div class="col-md-6 col-centered">
+
+          <div id="custom-search-input">
+            <div class="input-group col-md-12">
+              <input type="text" value="<%= params[:search] %>" name="search" id="search" class="form-control input-lg" placeholder="Hľadaj firmy, ico..." />
+                    <span class="input-group-btn">
+                      <button class="btn btn-info btn-lg" type="submit">
+                        <i class="glyphicon glyphicon-search"></i>
+                      </button>
+                    </span>
+            </div>
+          </div>
+
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="row">
+
+        <div class="col-md-4">
+          <h4 class="content-facetTitle">Právna forma:</h4>
+          <% @aggregations.companies.legal_forms.filtered_legal_forms.buckets.each_with_index do |bucket, index| %>
+              <div>
+                <input <%= 'checked' if params[:legal_forms] && (params[:legal_forms].include? bucket["key"]) %> type="checkbox" id="legalForm_<%= index %>" name="legal_forms[]" value="<%= bucket["key"] %>" />
+                <label for="legalForm_<%= index %>"><div class="content-checkboxKey"><%= bucket["key"]%></div><span> (<%= bucket.doc_count %>)</span></label>
+              </div>
+          <% end %>
+        </div>
+
+        <div class="col-md-4">
+          <h4 class="content-facetTitle">Súd:</h4>
+          <% @aggregations.companies.courts.filtered_courts.buckets.each_with_index do |bucket, index| %>
+              <div>
+                <input <%= 'checked' if params[:courts] && (params[:courts].include? bucket["key"]) %> type="checkbox" id="court_<%= index %>" name="courts[]" value="<%= bucket["key"] %>" />
+                <label for="court_<%= index %>">
+                  <div class="content-checkboxKey">
+                    <% case bucket["key"] %>
+                    <% when '2' %>
+                        <%= 'Okresný Súd Bratislava I' %>
+                    <% when '3' %>
+                        <%= 'Okresný Súd Banská Bystrica' %>
+                    <% when '4' %>
+                        <%= 'Okresný Súd Košice I' %>
+                    <% when '5' %>
+                        <%= 'Okresný Súd Žilina' %>
+                    <% when '6' %>
+                        <%= 'Okresný Súd Trenčín' %>
+                    <% when '7' %>
+                        <%= 'Okresný Súd Trnava' %>
+                    <% when '8' %>
+                        <%= 'Okresný Súd Prešov' %>
+                    <% when '9' %>
+                        <%= 'Okresný Súd Nitra' %>
+                    <% end %>
+                  </div>
+                  <span> (<%= bucket.doc_count %>)</span>
+                </label>
+              </div>
+          <% end %>
+        </div>
+
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="content-facetTitle">Základné imanie:</h4>
+              <b class="slider-label-left">€ 0</b> <input id="ex2" type="text" class="span2" value="" name="capital" data-slider-min="0" data-slider-max="100000" data-slider-step="1000" data-slider-value="[0,10000]"/> <b class="slider-label-right">€ 100 000</b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input checked type="checkbox" id="capitalFilterCheckbox" name="allCapital" value="1"/>
+              <label for="capitalFilterCheckbox">Ľubovoľná výška základného imania</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-centered">
+          <button class="btn btn-lg submitSearch" type="submit">Zobraziť výsledky</button>
+        </div>
+      </div>
+  </div>
+<% end %>
+
 <div class="row">
   <div class="col-md-12">
     <h4>Nájdených <%= @total_size %> výsledkov</h4>
   </div>
 </div>
 
-<% if @active_search %>
+<% if @active_search && @active_search != ''%>
 <div class="row">
   <div class="col-md-12">
     <span class="content-activeSearch">Hľadaný výraz: "<%= @active_search %>"</span>
@@ -66,3 +154,13 @@
     <%= will_paginate @companies %>
   </div>
 </div>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    $("#ex2").slider({});
+
+    $("#search").on("change paste keyup", function() {
+      console.log($(this).val());
+    });
+  });
+</script>

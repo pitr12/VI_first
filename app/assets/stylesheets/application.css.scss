@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require_self
+ *= require bootstrap-slider
  *= require_tree .
  */
 
@@ -107,6 +108,11 @@ body {
     margin-top: 30px;
   }
 
+  &-facetTitle {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
   &-activeSearch {
     background: #FEEFB3;
     color: #9F6000;
@@ -117,6 +123,14 @@ body {
       border-left: 1px solid #9F6000;
       cursor: pointer;
     }
+  }
+
+  &-checkboxKey {
+    display: inline-block;
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &-item {
@@ -287,4 +301,20 @@ a {
 
 .bold {
   font-weight: 600;
+}
+
+.label {
+  vertical-align: middle;
+}
+
+.slider-label-left {
+  padding-right: 15px;
+}
+
+.slider-label-right {
+  padding-left: 15px;
+}
+
+.submitSearch {
+  margin-top: 30px;
 }

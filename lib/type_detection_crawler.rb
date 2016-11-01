@@ -27,9 +27,9 @@ if ARGV.size > 0
   end
 end
 
-if ARGV.size == 0
-  types = File.foreach("#{File.dirname(__FILE__)}/types.txt").map{|x| x.chomp}
-  File.open("#{File.dirname(__FILE__)}/types.txt", 'w') do |f|
-    f.puts(types.uniq)
-  end
-end
+# if ARGV.size == 0
+#   types = File.foreach("#{File.dirname(__FILE__)}/types.txt").map{|x| x.chomp}
+#   File.open("#{File.dirname(__FILE__)}/types.txt", 'w') do |f|
+#     f.puts(types.uniq)
+#   end
+# end

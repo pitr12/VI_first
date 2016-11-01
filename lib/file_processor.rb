@@ -38,23 +38,24 @@ class FileProcessor
   def self.populate_elastic
     start = Time.now
     client = Elasticsearch::Client.new log: false
+    ElasticsearchConfig.setup('vi')
     json = JSON.parse(File.read("#{File.expand_path File.dirname(__FILE__)}/result.json"));
 
     body = []
-    overall_index = json.size
-    # json.each_with_index do |company, index|
-    #   overall_index = index
-    #   body << { index:  { _index: 'vi', _type: 'companies', data: company } }
-    #   if index != 0 && index % 300 == 0
-    #     response = client.bulk body: body
-    #     evaluate_response(response)
-    #     body = []
-    #   end
-    # end
-    #
-    # if body.size > 0
-    #   client.bulk body: body
-    # end
+    overall_index = 0
+    json.each_with_index do |company, index|
+      overall_index = index
+      body << { index:  { _index: 'vi', _type: 'companies', data: company } }
+      if index != 0 && index % 300 == 0
+        response = client.bulk body: body
+        evaluate_response(response)
+        body = []
+      end
+    end
+
+    if body.size > 0
+      client.bulk body: body
+    end
 
     finish = Time.now
     diff = finish - start
